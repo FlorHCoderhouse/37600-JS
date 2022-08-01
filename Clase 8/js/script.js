@@ -152,3 +152,4 @@ for (const item of catalogo) {
     <div class="card-footer"><a href="#" class="btn btn-primary">Comprar</a></div>`;
     contenedorTarjetas.append(tarjeta)
 }
+
