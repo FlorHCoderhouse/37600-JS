@@ -1,4 +1,4 @@
-//Fake Databases de Usuarios y Mascotas ( en el mundo real esto está en una DB que es accedida a través del backend)
+//Fake Databases de Usuarios y Mascotas (En el mundo real esto está en una DB que es accedida a través del backend)
 const usuarios = [{
     nombre: 'Azul',
     mail: 'azulperez@mail.com',
@@ -53,7 +53,7 @@ const mailLogin = document.getElementById('emailLogin'),
     toggles = document.querySelectorAll('.toggles');
 
 
-//guardamos los datos que recuperamos de la database en el storage
+//Guardamos los datos que recuperamos de la database en el storage
 function guardarDatos(usuarioDB, storage) {
     const usuario = {
         'name': usuarioDB.nombre,
@@ -65,24 +65,24 @@ function guardarDatos(usuarioDB, storage) {
     }
 
 
-//limpiar los storages
+//Limpiar los storages
 function borrarDatos() {
     localStorage.clear();
     sessionStorage.clear();
 }
 
-//recupero los datos que se guardaron y los retorno
+//Recupero los datos que se guardaron y los retorno
 function recuperarUsuario(storage) {
     let usuarioEnStorage = JSON.parse(storage.getItem('usuario'));
     return usuarioEnStorage;
 }
 
-//cambio el dom para mostrar el nombre del usuario logueado, usando los datos del storage
+//Cambio el DOM para mostrar el nombre del usuario logueado, usando los datos del storage
 function saludar(usuario) {
     nombreUsuario.innerHTML = `Bienvenido/a, <span>${usuario.name}</span>`
 }
 
-//Crear HTML dinámico para mostrar la información de las mascotas a partir del array fake DB
+//Creo HTML dinámico para mostrar la información de las mascotas a partir del array fake DB
 function mostrarInfoMascota(array) {
     contTarjetas.innerHTML = '';
     array.forEach(element => {
@@ -99,15 +99,15 @@ function mostrarInfoMascota(array) {
     });
 }
 
-//esta función nos permite intercambiar la visualizaión de los elementos del DOM, agregando o sacando la clase d-none. Si el elemento la tiene, se la saco, y si no la tiene, se la agrego. La gata Flora de las funciones sería.
+//Esta función nos permite intercambiar la visualización de los elementos del DOM, agregando o sacando la clase d-none. Si el elemento la tiene, se la saco, y si no la tiene, se la agrego. La gata Flora de las funciones sería.
 function presentarInfo(array, clase) {
     array.forEach(element => {
         element.classList.toggle(clase);
     });
 }
 
-//esta función revisa si hay un usuario guardado en el storage, y en ese caso evita todo el proceso de login 
-function isLogged(usuario) {
+//Esta función revisa si hay un usuario guardado en el storage, y en ese caso evita todo el proceso de login 
+function estaLogueado(usuario) {
 
     if (usuario) {
         saludar(usuario);
@@ -116,20 +116,19 @@ function isLogged(usuario) {
     }
 }
 
-
 //La función de validar se aprovecha del tipo de return que hace el método find (el objeto si lo encuentra, o undefined si no encuentra ninguno que cumpla con la condición)
-function validateUser(usersDB, user, pass) {
-    let isFound = usersDB.find((userDB) => userDB.mail == user);
+function validarUsuario(usersDB, user, pass) {
+    let encontrado = usersDB.find((userDB) => userDB.mail == user);
 
     //console.log('Usuario encontrado por validate '+ typeof isFound);
-    if (typeof isFound === 'undefined') {
+    if (typeof encontrado === 'undefined') {
         return false; 
     } else {
         //si estoy en este punto, quiere decir que el mail existe, sólo queda comparar la contraseña
-        if (isFound.pass != pass) {
+        if (encontrado.pass != pass) {
             return false;
         } else {
-            return isFound;
+            return encontrado;
         }
     }
 }
@@ -142,14 +141,14 @@ btnLogin.addEventListener('click', (e) => {
     if (!mailLogin.value || !passLogin.value) {
         alert('Todos los campos son requeridos');
     } else {
-        //revisamos si el return de la función validate es un objeto o un boolean. Si es un objeto, fue una validación exitosa y usamos los datos. Si no, informamos por alert.
-        let data = validateUser(usuarios, mailLogin.value, passLogin.value);
+        //Revisamos si el return de la función validate es un objeto o un boolean. Si es un objeto, fue una validación exitosa y usamos los datos. Si no, informamos por alert.
+        let data = validarUsuario(usuarios, mailLogin.value, passLogin.value);
 
         if (!data) {
-            alert(`No pudimos validar el login`)
+            alert(`Usuario y/o contraseña erróneos`);
         } else {
 
-            //revisamos si elige persistir la info aunque se cierre el navegador o no
+            //Revisamos si elige persistir la info aunque se cierre el navegador o no
             if (recordar.checked) {
                 guardarDatos(data, localStorage);
                 saludar(recuperarUsuario(localStorage));
@@ -157,16 +156,13 @@ btnLogin.addEventListener('click', (e) => {
                 guardarDatos(data, sessionStorage);
                 saludar(recuperarUsuario(sessionStorage));
             }
-            //recién ahora cierro el cuadrito de login
+            //Recién ahora cierro el cuadrito de login
             modal.hide();
-            //muestro la info para usuarios logueados
+            //Muestro la info para usuarios logueados
             mostrarInfoMascota(mascotas);
             presentarInfo(toggles, 'd-none');
         }
-
     }
-
-
 });
 
 btnLogout.addEventListener('click', () => {
@@ -174,4 +170,4 @@ btnLogout.addEventListener('click', () => {
     presentarInfo(toggles, 'd-none');
 });
 
-isLogged(recuperarUsuario(localStorage));
+estaLogueado(recuperarUsuario(localStorage));
