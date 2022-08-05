@@ -35,6 +35,7 @@ const cuentasUsuarioNuevo = [
     }
 ]
 
+
 //Elementos que usaré del DOM
 const btnSiguiente = document.getElementById('btnSiguiente'),
     btnCancelar = document.getElementById('btnCancelar'),
@@ -131,7 +132,7 @@ function calcularGananciaTotal(intereses, capital) {
     return intereses + capital;
 }
 
-//Calculo cuando se va a acreditar el dino en base a la cantidad de días que el usuario elige dejar la plata
+//Calculo cuando se va a acreditar el dinero en base a la cantidad de días que el usuario elige dejar la plata
 function calcularFechaAcreditacion(pf) {
     let acreditacion = new Date();
     acreditacion.setDate(acreditacion.getDate() + pf.dias);
@@ -153,6 +154,8 @@ function mostrarCalculado(pf) {
 
 
 //Creo los elementos que voy a mostrar en el dom, con la info del plazo fijo y de los resultados de los cálculos
+
+
 function crearHTMLInfoUsuario(pf, calculos) {
     let lista = confirmacion.querySelector('ul');
     let items = [];
